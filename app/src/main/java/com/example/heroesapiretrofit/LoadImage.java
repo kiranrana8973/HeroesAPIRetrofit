@@ -1,5 +1,6 @@
 package com.example.heroesapiretrofit;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import ApiCall.HeroesAPI;
@@ -17,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import strictmode.StrictMode;
 
 public class LoadImage extends AppCompatActivity {
 
@@ -28,8 +33,25 @@ public class LoadImage extends AppCompatActivity {
         setContentView(R.layout.activity_load_image);
         imgProfile = findViewById(R.id.imgPhoto);
         tvData = findViewById(R.id.tvData);
-        loadImage();
+        loadFromURL();
+    }
 
+    private void StrictMode()
+    {
+        android.os.StrictMode.ThreadPolicy policy =
+                new android.os.StrictMode.ThreadPolicy.Builder().permitAll().build();
+        android.os.StrictMode.setThreadPolicy(policy);
+    }
+
+    private void loadFromURL() {
+       StrictMode();
+        try {
+            String imgPath = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+            URL url = new URL(imgPath);
+            imgProfile.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
+        } catch (IOException e) {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadImage() {
@@ -41,9 +63,7 @@ public class LoadImage extends AppCompatActivity {
 
         HeroesAPI heroesAPI = retrofit.create(HeroesAPI.class);
 
-
         Call<List<Heroes>> heroesCall = heroesAPI.getAllHeroes();
-
 
         heroesCall.enqueue(new Callback<List<Heroes>>() {
             @Override
@@ -74,7 +94,5 @@ public class LoadImage extends AppCompatActivity {
                 tvData.setText(t.getLocalizedMessage());
             }
         });
-
-
     }
 }
