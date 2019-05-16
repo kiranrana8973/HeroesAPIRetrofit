@@ -1,7 +1,7 @@
 package model;
 
 public class Heroes {
-    private int _id;
+    private String _id;
     private String name;
     private String desc;
     private String image;
@@ -10,21 +10,18 @@ public class Heroes {
     private String __v;
 
 
-    public Heroes(int _id, String name, String desc, String image, String createdAt, String updatedAt, String __v) {
-        this._id = _id;
+    public Heroes(String name, String desc, String image) {
+
         this.name = name;
         this.desc = desc;
         this.image = image;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.__v = __v;
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 

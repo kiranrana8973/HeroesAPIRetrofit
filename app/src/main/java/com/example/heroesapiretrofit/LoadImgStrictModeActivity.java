@@ -12,19 +12,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import Url.Url;
+
 public class LoadImgStrictModeActivity extends AppCompatActivity {
     private ImageView imgProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_img_strict_mode);
         imgProfile = findViewById(R.id.imgPhoto);
-        loadFromURL();
+        // loadFromURL();
+        loadFromURLStrictMode();
     }
 
 
-    private void StrictMode()
-    {
+    private void StrictMode() {
         android.os.StrictMode.ThreadPolicy policy =
                 new android.os.StrictMode.ThreadPolicy.Builder().permitAll().build();
         android.os.StrictMode.setThreadPolicy(policy);
@@ -33,21 +36,22 @@ public class LoadImgStrictModeActivity extends AppCompatActivity {
     private void loadFromURLStrictMode() {
         StrictMode();
         try {
-            String imgURL = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+            // String imgURL = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+            String imgURL = Url.BASE_URL + "uploads/imageFile-1557891346577.jpg";
             URL url = new URL(imgURL);
-            imgProfile.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
+            imgProfile.setImageBitmap(BitmapFactory.decodeStream((InputStream) url.getContent()));
         } catch (IOException e) {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void loadFromURL()
-    {
-        String url = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+    private void loadFromURL() {
+        //String url = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+        String url = Url.BASE_URL + "uploads/imageFile-1557891346577.jpg";
         new AsyncTaskLoadImage(imgProfile).execute(url);
     }
 
-    public class AsyncTaskLoadImage  extends AsyncTask<String, String, Bitmap> {
+    public class AsyncTaskLoadImage extends AsyncTask<String, String, Bitmap> {
         private final static String TAG = "AsyncTaskLoadImage";
         private ImageView imageView;
 
@@ -66,10 +70,10 @@ public class LoadImgStrictModeActivity extends AppCompatActivity {
             }
             return bitmap;
         }
+
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             imageView.setImageBitmap(bitmap);
         }
     }
 }
-

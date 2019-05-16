@@ -46,7 +46,8 @@ public class LoadImage extends AppCompatActivity {
     private void loadFromURL() {
        StrictMode();
         try {
-            String imgPath = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+            //String imgPath = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+            String imgPath = "http://10.0.2.2:3000/uploads/imageFile-1557891346577.jpg";
             URL url = new URL(imgPath);
             imgProfile.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
         } catch (IOException e) {
