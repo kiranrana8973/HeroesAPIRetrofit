@@ -36,14 +36,17 @@ public class LoadImgStrictModeActivity extends AppCompatActivity {
     private void loadFromURLStrictMode() {
         StrictMode();
         try {
-            // String imgURL = "https://www.gstatic.com/webp/gallery3/1.sm.png";
-            String imgURL = Url.BASE_URL + "uploads/imageFile-1557891346577.jpg";
+            String imgURL = "https://www.gstatic.com/webp/gallery3/1.sm.png";
+           // String imgURL = Url.BASE_URL + "uploads/imageFile-1557891346577.jpg";
             URL url = new URL(imgURL);
             imgProfile.setImageBitmap(BitmapFactory.decodeStream((InputStream) url.getContent()));
         } catch (IOException e) {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
 
     private void loadFromURL() {
         //String url = "https://www.gstatic.com/webp/gallery3/1.sm.png";

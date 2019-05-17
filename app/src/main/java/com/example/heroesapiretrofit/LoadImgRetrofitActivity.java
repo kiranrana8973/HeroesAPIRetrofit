@@ -78,7 +78,7 @@ public class LoadImgRetrofitActivity extends AppCompatActivity {
         Uri uri = data.getData();
         imagePath = getRealPathFromUri(uri);
 
-
+      //  Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(imageView);
     }
 
     private String getRealPathFromUri(Uri uri) {
