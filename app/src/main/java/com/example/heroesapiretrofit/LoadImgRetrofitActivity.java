@@ -59,32 +59,31 @@ public class LoadImgRetrofitActivity extends AppCompatActivity {
             }
         });
     }
-    private void browseImg()
-    {
+
+    private void browseImg() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
-        startActivityForResult(intent,0);
+        startActivityForResult(intent, 0);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode==RESULT_OK)
-        {
-            if(data==null)
-            {
+        if (resultCode == RESULT_OK) {
+            if (data == null) {
                 Toast.makeText(this, "Please select an image ", Toast.LENGTH_SHORT).show();
             }
         }
         Uri uri = data.getData();
         imagePath = getRealPathFromUri(uri);
 
+
     }
 
-    private String getRealPathFromUri(Uri uri)
-    {
+    private String getRealPathFromUri(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
-        CursorLoader loader = new CursorLoader(getApplicationContext(),uri,projection,null,null,null);
+        CursorLoader loader = new CursorLoader(getApplicationContext(), uri, projection, null, null, null);
         Cursor cursor = loader.loadInBackground();
         int colIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
@@ -94,10 +93,7 @@ public class LoadImgRetrofitActivity extends AppCompatActivity {
 
     }
 
-
-
-    private void uploadPic()
-    {
+    private void uploadPic() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Url.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -107,26 +103,23 @@ public class LoadImgRetrofitActivity extends AppCompatActivity {
 
         File file = new File(imagePath);
 
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"),file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("imageFile",file.getName(),requestBody);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("imageFile", file.getName(), requestBody);
 
         Call<ResponseBody> responseBodyCall = heroesAPI.uploadImage(body);
 
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(!response.isSuccessful())
-                {
+
+                if (!response.isSuccessful()) {
                     Toast.makeText(LoadImgRetrofitActivity.this, "Error " + response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                String value = response.body().toString();
+
                 JsonObject post = new JsonObject().get(response.body().toString()).getAsJsonObject();
-                Toast.makeText(LoadImgRetrofitActivity.this, "Name is : " + post.get("filename"), Toast.LENGTH_SHORT).show();
-
-
-                Log.d("Mero msgh", "onResponse: " + response.body());
-
                 Toast.makeText(LoadImgRetrofitActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
             }
 
